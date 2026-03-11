@@ -96,7 +96,7 @@ export default function Home() {
           <div className="inline-flex items-center gap-2 bg-accent/10 text-accent text-sm font-medium px-4 py-1.5 rounded-full mb-6">
             <span>v1.0</span>
             <span className="text-accent/50">·</span>
-            <span>Built with Go</span>
+            <span>Cross-Platform · Built with Go</span>
           </div>
           <h1 className="text-5xl sm:text-6xl font-bold tracking-tight mb-6">
             Stop typing long
@@ -104,7 +104,7 @@ export default function Home() {
             <span className="text-accent">directory paths.</span>
           </h1>
           <p className="text-muted text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-            <strong className="text-foreground">Goto</strong> is a tiny CLI tool that lets you
+            <strong className="text-foreground">Goto</strong> is a cross-platform CLI tool that lets you
             bookmark directories with short names, then jump to them instantly from anywhere.
           </p>
           <CodeBlock>
@@ -113,19 +113,19 @@ export default function Home() {
             </span>
             {"\n"}
             <span className="text-code-green">$</span>{" "}
-            <span className="text-code-fg">gotocli goto add </span>
+            <span className="text-code-fg">goto add </span>
             <span className="text-code-blue">projects</span>{" "}
-            <span className="text-code-yellow">~/Desktop/my_projects</span>
+            <span className="text-code-yellow">/home/user/projects</span>
             {"\n"}
-            <span className="text-code-pink">Saved &apos;projects&apos; -&gt; ~/Desktop/my_projects</span>
+            <span className="text-code-pink">Saved &apos;projects&apos; -&gt; /home/user/projects</span>
             {"\n\n"}
             <span className="text-code-comment"># Jump to it from anywhere</span>
             {"\n"}
             <span className="text-code-green">$</span>{" "}
-            <span className="text-code-fg">goto </span>
+            <span className="text-code-fg">goto jump </span>
             <span className="text-code-blue">projects</span>
             {"\n"}
-            <span className="text-code-pink">~/Desktop/my_projects $</span>
+            <span className="text-code-pink">/home/user/projects $</span>
           </CodeBlock>
         </section>
 
@@ -145,9 +145,9 @@ export default function Home() {
                 icon: "⚡",
               },
               {
-                title: "Manage",
-                desc: "List all bookmarks or remove ones you no longer need.",
-                icon: "📋",
+                title: "Cross-Platform",
+                desc: "Works on Mac, Linux, and Windows with shell-specific setup.",
+                icon: "🌐",
               },
             ].map((f) => (
               <div
@@ -200,24 +200,23 @@ export default function Home() {
             </div>
             <div>
               <h3 className="font-semibold mb-3">2. Add to your PATH</h3>
-              <p className="text-muted mb-4 text-sm">
-                Move the binary somewhere on your PATH so you can run it from anywhere.
-              </p>
-              <CodeBlock>
-                <span className="text-code-comment">
-                  # Move to a directory in your PATH
-                </span>
-                {"\n"}
-                <span className="text-code-green">$</span>{" "}
-                {"sudo mv gotocli /usr/local/bin/"}
-                {"\n\n"}
-                <span className="text-code-comment"># Verify it works</span>
-                {"\n"}
-                <span className="text-code-green">$</span>{" "}
-                {"gotocli goto list"}
-                {"\n"}
-                <span className="text-code-yellow">No directories saved.</span>
-              </CodeBlock>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-muted mb-3 text-sm font-medium">Mac & Linux</p>
+                  <CodeBlock>
+                    <span className="text-code-green">$</span>{" "}
+                    {"sudo mv gotocli /usr/local/bin/"}
+                  </CodeBlock>
+                </div>
+                <div>
+                  <p className="text-muted mb-3 text-sm font-medium">Windows</p>
+                  <CodeBlock>
+                    <span className="text-code-comment"># Move gotocli.exe to a directory in your PATH</span>
+                    {"\n"}
+                    {"Move gotocli.exe to C:\\Program Files\\gotocli\\"}
+                  </CodeBlock>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -229,30 +228,29 @@ export default function Home() {
             <CommandCard
               command="add"
               description="Save a directory path with a short alias name. Paths with spaces are supported."
-              usage="gotocli goto add <name> <path>"
-              example="gotocli goto add work ~/Documents/work/project-alpha"
-              output="Saved 'work' -> ~/Documents/work/project-alpha"
+              usage="goto add <name> <path>"
+              example="goto add projects /home/user/projects"
+              output="Saved 'projects' -> /home/user/projects"
             />
             <CommandCard
               command="jump"
-              description="Retrieve the path for a saved alias. Prints the path to stdout so it can be used with cd via a shell function."
-              usage="gotocli goto jump <name>"
-              example="gotocli goto jump work"
-              output="~/Documents/work/project-alpha"
+              description="Jump to a saved directory. The shell wrapper intercepts this command to cd into the target path."
+              usage="goto jump <name>"
+              example="goto jump projects"
             />
             <CommandCard
               command="list"
               description="Display all saved directory bookmarks and their paths."
-              usage="gotocli goto list"
-              example="gotocli goto list"
-              output={"  work -> ~/Documents/work/project-alpha\n  docs -> ~/Documents"}
+              usage="goto list"
+              example="goto list"
+              output={"  projects -> /home/user/projects\n  docs -> /home/user/Documents"}
             />
             <CommandCard
               command="remove"
               description="Delete a saved directory bookmark by its alias name."
-              usage="gotocli goto remove <name>"
-              example="gotocli goto remove work"
-              output="Removed 'work'"
+              usage="goto remove <name>"
+              example="goto remove projects"
+              output="Removed 'projects'"
             />
           </div>
         </section>
@@ -261,50 +259,80 @@ export default function Home() {
         <section id="shell-setup" className="py-16 border-t border-surface-border">
           <SectionHeading id="shell-setup">Shell Setup</SectionHeading>
           <p className="text-muted mb-6 leading-relaxed">
-            The <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">jump</code>{" "}
-            command prints a directory path but can&apos;t change your shell&apos;s working
-            directory by itself. Add this shell function to your{" "}
+            A shell wrapper function is required so that{" "}
             <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">
-              ~/.zshrc
+              goto jump
             </code>{" "}
-            or{" "}
+            can actually change your working directory. The wrapper also lets you use{" "}
             <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">
-              ~/.bashrc
+              goto
             </code>{" "}
-            to enable{" "}
+            directly instead of{" "}
             <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">
-              goto &lt;name&gt;
-            </code>{" "}
-            to actually change directories:
+              gotocli goto
+            </code>
+            .
           </p>
-          <CodeBlock>
-            <span className="text-code-comment">
-              # Add to ~/.zshrc or ~/.bashrc
-            </span>
-            {"\n"}
-            <span className="text-code-blue">goto</span>
-            {"() {\n"}
-            {"  local dest\n"}
-            {"  dest=$(gotocli goto jump \"$1\")\n"}
-            {"  if [ $? -eq 0 ] && [ -n \"$dest\" ]; then\n"}
-            {"    cd \"$dest\"\n"}
-            {"  else\n"}
-            {"    echo \"goto: '$1' not found\"\n"}
-            {"  fi\n"}
-            {"}"}
-            {"\n\n"}
-            <span className="text-code-comment"># Then reload your shell</span>
-            {"\n"}
-            <span className="text-code-green">$</span> {"source ~/.zshrc"}
-          </CodeBlock>
+
+          <div className="space-y-6">
+            <div>
+              <h3 className="font-semibold mb-3">Mac & Linux — add to <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">~/.zshrc</code> or <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">~/.bashrc</code></h3>
+              <CodeBlock>
+                <span className="text-code-blue">function</span>
+                {" goto() {\n"}
+                {"    local command=$1\n"}
+                {"    local name=$2\n"}
+                {"    local path=$3\n"}
+                {"\n"}
+                {"    if [ \"$command\" = \"jump\" ]; then\n"}
+                {"        TARGET=$(/usr/local/bin/gotocli goto jump \"$name\" 2>/dev/null)\n"}
+                {"        if [ -z \"$TARGET\" ]; then\n"}
+                {"            echo \"No directory found for '$name'\"\n"}
+                {"        else\n"}
+                {"            cd \"$TARGET\"\n"}
+                {"        fi\n"}
+                {"    else\n"}
+                {"        /usr/local/bin/gotocli goto \"$command\" \"$name\" \"$path\"\n"}
+                {"    fi\n"}
+                {"}"}
+                {"\n\n"}
+                <span className="text-code-comment"># Then reload your shell</span>
+                {"\n"}
+                <span className="text-code-green">$</span> {"source ~/.zshrc"}
+              </CodeBlock>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-3">Windows — add to PowerShell <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">$PROFILE</code></h3>
+              <CodeBlock>
+                <span className="text-code-blue">function</span>
+                {" goto {\n"}
+                {"    param($command, $name, $path)\n"}
+                {"\n"}
+                {"    if ($command -eq \"jump\") {\n"}
+                {"        $TARGET = & \"C:\\Program Files\\gotocli\\gotocli.exe\" goto jump $name 2>$null\n"}
+                {"        if (-not $TARGET) {\n"}
+                {"            Write-Host \"No directory found for '$name'\"\n"}
+                {"        } else {\n"}
+                {"            Set-Location $TARGET\n"}
+                {"        }\n"}
+                {"    } else {\n"}
+                {"        & \"C:\\Program Files\\gotocli\\gotocli.exe\" goto $command $name $path\n"}
+                {"    }\n"}
+                {"}"}
+              </CodeBlock>
+            </div>
+          </div>
+
           <div className="mt-6 bg-accent/5 border border-accent/20 rounded-xl p-5">
             <p className="text-sm text-muted leading-relaxed">
-              <strong className="text-foreground">Why a shell function?</strong>{" "}
+              <strong className="text-foreground">Why a shell wrapper?</strong>{" "}
               A subprocess (like a Go binary) cannot change the parent shell&apos;s
-              working directory. The shell function calls{" "}
-              <code className="text-accent">gotocli goto jump</code>, captures the
-              output path, and runs{" "}
-              <code className="text-accent">cd</code> in the current shell session.
+              working directory. The wrapper intercepts the{" "}
+              <code className="text-accent">jump</code> command to run{" "}
+              <code className="text-accent">cd</code> in the current shell session,
+              and forwards all other commands directly to{" "}
+              <code className="text-accent">gotocli</code>.
             </p>
           </div>
         </section>
@@ -322,10 +350,10 @@ export default function Home() {
               </thead>
               <tbody className="font-mono">
                 {[
-                  ["Save a directory", "gotocli goto add <name> <path>"],
-                  ["Jump to a directory", "goto <name>"],
-                  ["List all bookmarks", "gotocli goto list"],
-                  ["Remove a bookmark", "gotocli goto remove <name>"],
+                  ["Save a directory", "goto add <name> <path>"],
+                  ["Jump to a directory", "goto jump <name>"],
+                  ["List all bookmarks", "goto list"],
+                  ["Remove a bookmark", "goto remove <name>"],
                   ["Config file location", "~/.goto.json"],
                 ].map(([action, cmd]) => (
                   <tr key={action} className="border-b border-surface-border last:border-0">

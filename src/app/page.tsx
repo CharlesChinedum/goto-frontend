@@ -177,11 +177,46 @@ export default function Home() {
         {/* Installation */}
         <section id="installation" className="py-16 border-t border-surface-border">
           <SectionHeading id="installation">Installation</SectionHeading>
-          <div className="space-y-6">
+          <p className="text-muted mb-8 leading-relaxed">
+            You can either download a pre-built binary or build from source.
+          </p>
+
+          <div className="space-y-10">
+            {/* Option A: Download */}
             <div>
-              <h3 className="font-semibold mb-3">1. Build from source</h3>
+              <h3 className="font-semibold mb-1 text-lg">Option A — Download pre-built binary</h3>
               <p className="text-muted mb-4 text-sm">
-                Requires Go 1.25+ installed on your system.
+                Grab the latest binary for your platform from the releases page. No dependencies required.
+              </p>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-muted mb-3 text-sm font-medium">Mac & Linux</p>
+                  <CodeBlock>
+                    <span className="text-code-comment"># Download the binary for your platform from the releases page</span>
+                    {"\n"}
+                    <span className="text-code-green">$</span>{" "}
+                    {"chmod +x gotocli"}
+                    {"\n"}
+                    <span className="text-code-green">$</span>{" "}
+                    {"sudo mv gotocli /usr/local/bin/"}
+                  </CodeBlock>
+                </div>
+                <div>
+                  <p className="text-muted mb-3 text-sm font-medium">Windows</p>
+                  <CodeBlock>
+                    <span className="text-code-comment"># Download gotocli.exe from the releases page</span>
+                    {"\n"}
+                    {"Move gotocli.exe to C:\\Program Files\\gotocli\\"}
+                  </CodeBlock>
+                </div>
+              </div>
+            </div>
+
+            {/* Option B: Build from source */}
+            <div>
+              <h3 className="font-semibold mb-1 text-lg">Option B — Build from source</h3>
+              <p className="text-muted mb-4 text-sm">
+                Requires <a href="https://go.dev/dl/" className="text-accent hover:underline">Go 1.25+</a> installed on your system.
               </p>
               <CodeBlock>
                 <span className="text-code-comment"># Clone the repository</span>
@@ -197,22 +232,17 @@ export default function Home() {
                 <span className="text-code-green">$</span>{" "}
                 {"go build -o gotocli ./app"}
               </CodeBlock>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-3">2. Add to your PATH</h3>
-              <div className="space-y-4">
+              <div className="mt-4 space-y-4">
                 <div>
-                  <p className="text-muted mb-3 text-sm font-medium">Mac & Linux</p>
+                  <p className="text-muted mb-3 text-sm font-medium">Then add to your PATH — Mac & Linux</p>
                   <CodeBlock>
                     <span className="text-code-green">$</span>{" "}
                     {"sudo mv gotocli /usr/local/bin/"}
                   </CodeBlock>
                 </div>
                 <div>
-                  <p className="text-muted mb-3 text-sm font-medium">Windows</p>
+                  <p className="text-muted mb-3 text-sm font-medium">Then add to your PATH — Windows</p>
                   <CodeBlock>
-                    <span className="text-code-comment"># Move gotocli.exe to a directory in your PATH</span>
-                    {"\n"}
                     {"Move gotocli.exe to C:\\Program Files\\gotocli\\"}
                   </CodeBlock>
                 </div>

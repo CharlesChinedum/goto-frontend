@@ -162,15 +162,28 @@ export default function Home() {
           </div>
           <div className="mt-8 bg-surface border border-surface-border rounded-xl p-6">
             <h3 className="font-semibold mb-3">How it works</h3>
-            <p className="text-muted leading-relaxed">
-              Goto stores your directory bookmarks in a simple JSON file at{" "}
-              <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">
-                ~/.goto.json
-              </code>
-              . Each bookmark maps an alias name to an absolute directory path. The CLI
-              binary reads and writes this file—no database, no daemon, no network
-              calls. It&apos;s fast because there&apos;s nothing to slow it down.
-            </p>
+            <ul className="text-muted leading-relaxed space-y-2">
+              <li>
+                The <strong className="text-foreground">Go binary</strong> (
+                <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">gotocli</code>
+                ) handles all data storage and retrieval, saving directories to{" "}
+                <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">~/.goto.json</code>
+              </li>
+              <li>
+                The <strong className="text-foreground">shell wrapper</strong> (
+                <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">goto</code>
+                ) intercepts the{" "}
+                <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">jump</code>
+                {" "}command and runs{" "}
+                <code className="bg-accent/10 text-accent text-sm px-1.5 py-0.5 rounded">cd</code>
+                {" "}in the current shell
+              </li>
+              <li>
+                This is the same pattern used by popular tools like{" "}
+                <strong className="text-foreground">z</strong> and{" "}
+                <strong className="text-foreground">autojump</strong>
+              </li>
+            </ul>
           </div>
         </section>
 
@@ -222,15 +235,15 @@ export default function Home() {
                 <span className="text-code-comment"># Clone the repository</span>
                 {"\n"}
                 <span className="text-code-green">$</span>{" "}
-                {"git clone <repo-url>"}
+                {"git clone git@github.com:CharlesChinedum/goto-cli.git"}
                 {"\n"}
                 <span className="text-code-green">$</span>{" "}
-                {"cd goto_project/goto"}
+                {"cd goto-cli"}
                 {"\n\n"}
                 <span className="text-code-comment"># Build the binary</span>
                 {"\n"}
                 <span className="text-code-green">$</span>{" "}
-                {"go build -o gotocli ./app"}
+                {"go build -o gotocli app/main.go"}
               </CodeBlock>
               <div className="mt-4 space-y-4">
                 <div>
@@ -282,6 +295,18 @@ export default function Home() {
               example="goto remove projects"
               output="Removed 'projects'"
             />
+            <CommandCard
+              command="edit"
+              description="Update the path of an existing saved directory bookmark."
+              usage="goto edit <name> <newpath>"
+              example="goto edit projects /home/user/new-projects"
+            />
+            <CommandCard
+              command="rename"
+              description="Rename an existing directory bookmark without changing its path."
+              usage="goto rename <oldname> <newname>"
+              example="goto rename projects work-projects"
+            />
           </div>
         </section>
 
@@ -313,6 +338,7 @@ export default function Home() {
                 {"    local command=$1\n"}
                 {"    local name=$2\n"}
                 {"    local path=$3\n"}
+                {"    local extra=$4\n"}
                 {"\n"}
                 {"    if [ \"$command\" = \"jump\" ]; then\n"}
                 {"        TARGET=$(/usr/local/bin/gotocli goto jump \"$name\" 2>/dev/null)\n"}
@@ -321,8 +347,12 @@ export default function Home() {
                 {"        else\n"}
                 {"            cd \"$TARGET\"\n"}
                 {"        fi\n"}
+                {"    elif [ \"$command\" = \"edit\" ]; then\n"}
+                {"        /usr/local/bin/gotocli goto edit \"$name\" \"$path\"\n"}
+                {"    elif [ \"$command\" = \"rename\" ]; then\n"}
+                {"        /usr/local/bin/gotocli goto rename \"$name\" \"$path\"\n"}
                 {"    else\n"}
-                {"        /usr/local/bin/gotocli goto \"$command\" \"$name\" \"$path\"\n"}
+                {"        /usr/local/bin/gotocli goto \"$command\" \"$name\" \"$path\" \"$extra\"\n"}
                 {"    fi\n"}
                 {"}"}
                 {"\n\n"}
@@ -337,7 +367,7 @@ export default function Home() {
               <CodeBlock>
                 <span className="text-code-blue">function</span>
                 {" goto {\n"}
-                {"    param($command, $name, $path)\n"}
+                {"    param($command, $name, $path, $extra)\n"}
                 {"\n"}
                 {"    if ($command -eq \"jump\") {\n"}
                 {"        $TARGET = & \"C:\\Program Files\\gotocli\\gotocli.exe\" goto jump $name 2>$null\n"}
@@ -346,8 +376,12 @@ export default function Home() {
                 {"        } else {\n"}
                 {"            Set-Location $TARGET\n"}
                 {"        }\n"}
+                {"    } elseif ($command -eq \"edit\") {\n"}
+                {"        & \"C:\\Program Files\\gotocli\\gotocli.exe\" goto edit $name $path\n"}
+                {"    } elseif ($command -eq \"rename\") {\n"}
+                {"        & \"C:\\Program Files\\gotocli\\gotocli.exe\" goto rename $name $path\n"}
                 {"    } else {\n"}
-                {"        & \"C:\\Program Files\\gotocli\\gotocli.exe\" goto $command $name $path\n"}
+                {"        & \"C:\\Program Files\\gotocli\\gotocli.exe\" goto $command $name $path $extra\n"}
                 {"    }\n"}
                 {"}"}
               </CodeBlock>
@@ -384,6 +418,8 @@ export default function Home() {
                   ["Jump to a directory", "goto jump <name>"],
                   ["List all bookmarks", "goto list"],
                   ["Remove a bookmark", "goto remove <name>"],
+                  ["Edit a directory path", "goto edit <name> <newpath>"],
+                  ["Rename a bookmark", "goto rename <oldname> <newname>"],
                   ["Config file location", "~/.goto.json"],
                 ].map(([action, cmd]) => (
                   <tr key={action} className="border-b border-surface-border last:border-0">

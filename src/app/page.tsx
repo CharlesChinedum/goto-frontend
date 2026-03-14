@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 function CodeBlock({ children }: { children: React.ReactNode }) {
   return (
     <pre className="bg-code-bg text-code-fg rounded-lg p-4 overflow-x-auto text-sm leading-relaxed font-mono">
@@ -199,7 +201,13 @@ export default function Home() {
             <div>
               <h3 className="font-semibold mb-1 text-lg">Option A — Download pre-built binary</h3>
               <p className="text-muted mb-4 text-sm">
-                Grab the latest binary for your platform from the releases page. No dependencies required.
+                Grab the latest binary for your platform from the {""}
+                <Link
+                  href="https://github.com/CharlesChinedum/goto-cli/releases/tag/v1.1.0"
+                  target="_blank"
+                  className="text-accent-light hover:text-accent"
+                >releases page.</Link>{" "}
+                No dependencies required.
               </p>
               <div className="space-y-4">
                 <div>

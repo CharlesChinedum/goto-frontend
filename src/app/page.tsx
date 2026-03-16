@@ -272,52 +272,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Commands */}
-        <section id="commands" className="py-16 border-t border-surface-border">
-          <SectionHeading id="commands">Commands</SectionHeading>
-          <div className="grid gap-6">
-            <CommandCard
-              command="add"
-              description="Save a directory path with a short alias name. Paths with spaces are supported."
-              usage="goto add <name> <path>"
-              example="goto add projects /home/user/projects"
-              output="Saved 'projects' -> /home/user/projects"
-            />
-            <CommandCard
-              command="jump"
-              description="Jump to a saved directory. The shell wrapper intercepts this command to cd into the target path."
-              usage="goto jump <name>"
-              example="goto jump projects"
-            />
-            <CommandCard
-              command="list"
-              description="Display all saved directory bookmarks and their paths."
-              usage="goto list"
-              example="goto list"
-              output={"  projects -> /home/user/projects\n  docs -> /home/user/Documents"}
-            />
-            <CommandCard
-              command="remove"
-              description="Delete a saved directory bookmark by its alias name."
-              usage="goto remove <name>"
-              example="goto remove projects"
-              output="Removed 'projects'"
-            />
-            <CommandCard
-              command="edit"
-              description="Update the path of an existing saved directory bookmark."
-              usage="goto edit <name> <newpath>"
-              example="goto edit projects /home/user/new-projects"
-            />
-            <CommandCard
-              command="rename"
-              description="Rename an existing directory bookmark without changing its path."
-              usage="goto rename <oldname> <newname>"
-              example="goto rename projects work-projects"
-            />
-          </div>
-        </section>
-
         {/* Shell Setup */}
         <section id="shell-setup" className="py-16 border-t border-surface-border">
           <SectionHeading id="shell-setup">Shell Setup</SectionHeading>
@@ -406,6 +360,52 @@ export default function Home() {
               and forwards all other commands directly to{" "}
               <code className="text-accent">gotocli</code>.
             </p>
+          </div>
+        </section>
+
+        {/* Commands */}
+        <section id="commands" className="py-16 border-t border-surface-border">
+          <SectionHeading id="commands">Commands</SectionHeading>
+          <div className="grid gap-6">
+            <CommandCard
+              command="add"
+              description="Save a directory path with a short alias name. Paths with spaces are supported."
+              usage="goto add <name> <path>"
+              example="goto add projects /home/user/projects"
+              output="Saved 'projects' -> /home/user/projects"
+            />
+            <CommandCard
+              command="jump"
+              description="Jump to a saved directory. The shell wrapper intercepts this command to cd into the target path."
+              usage="goto jump <name>"
+              example="goto jump projects"
+            />
+            <CommandCard
+              command="list"
+              description="Display all saved directory bookmarks and their paths."
+              usage="goto list"
+              example="goto list"
+              output={"  projects -> /home/user/projects\n  docs -> /home/user/Documents"}
+            />
+            <CommandCard
+              command="remove"
+              description="Delete a saved directory bookmark by its alias name."
+              usage="goto remove <name>"
+              example="goto remove projects"
+              output="Removed 'projects'"
+            />
+            <CommandCard
+              command="edit"
+              description="Update the path of an existing saved directory bookmark."
+              usage="goto edit <name> <newpath>"
+              example="goto edit projects /home/user/new-projects"
+            />
+            <CommandCard
+              command="rename"
+              description="Rename an existing directory bookmark without changing its path."
+              usage="goto rename <oldname> <newname>"
+              example="goto rename projects work-projects"
+            />
           </div>
         </section>
 

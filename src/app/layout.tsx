@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,8 +29,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-
-        <script defer src="https://cloud.umami.is/script.js" data-website-id="b4bae58d-ccfb-4cd9-aa40-6165d43b708c"></script>
+        <Analytics />
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="b4bae58d-ccfb-4cd9-aa40-6165d43b708c"
+        ></script>
       </body>
     </html>
   );
